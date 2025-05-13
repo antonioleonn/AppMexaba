@@ -1,0 +1,75 @@
+﻿@* Views/VentasVip/Index.cshtml *@
+@model List<AppMexaba.Dtos.SucursalResumenDto>
+@{
+    ViewBag.Title = "Clientes VIP por Sucursal";
+}
+
+<h2 class="mb-4">Clientes VIP por Sucursal</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-3">
+    @foreach (var suc in Model)
+    {
+        <div class="col">
+            <div class="sucursal-box text-center p-3 fw-semibold"
+                 data-suc="@suc.Sucursal"
+                 onclick="window.location.href='/VentasVip/DetalleSucursal?suc=@suc.Sucursal'"
+                 onmouseenter="mostrarResumenVIP('@suc.Sucursal', this)">
+                @suc.Sucursal
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal flotante -->
+<div id="tooltipSucursal" class="position-absolute bg-white border shadow p-3 rounded d-none" style="z-index:999; width: 200px;"></div>
+
+@section Scripts {
+    <style>
+        .sucursal-box {
+            border: 2px solid #343a40;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s, background-color 0.2s;
+            cursor: pointer;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+            .sucursal-box:hover {
+                transform: scale(1.03);
+                box-shadow: 0 0 12px rgba(0,0,0,0.1);
+                background-color: #d1e7dd;
+                color: #0f5132;
+            }
+    </style>
+
+    <script>
+        function mostrarResumenVIP(suc, elem) {
+            fetch('/VentasVip/ResumenSucursal?suc=' + suc)
+                .then(res => res.json())
+                .then(data => {
+                    const tooltip = document.getElementById('tooltipSucursal');
+                    tooltip.innerHTML = `
+                        <strong>Sucursal: ${data.sucursal}</strong><br/>
+                        Clientes VIP: ${data.total}<br/>
+                        <span class='text-success'>Cumplen: ${data.cumplen}</span><br/>
+                        <span class='text-danger'>No cumplen: ${data.noCumplen}</span>
+                    `;
+                    const rect = elem.getBoundingClientRect();
+                    tooltip.style.top = (rect.top + window.scrollY + 10) + 'px';
+                    tooltip.style.left = (rect.left + 10) + 'px';
+                    tooltip.classList.remove('d-none');
+                });
+        }
+
+        document.addEventListener('mousemove', function (event) {
+            const tooltip = document.getElementById('tooltipSucursal');
+            if (!event.target.classList.contains('sucursal-box')) {
+                tooltip.classList.add('d-none');
+            }
+        });
+    </script>
+} 

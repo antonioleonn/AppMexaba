@@ -1,0 +1,102 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Abasto por Capas por Sucursal";
+}
+
+<h2 class="text-3xl font-bold mb-6 text-gray-800">Abasto por Capas por Sucursal</h2>
+
+<style>
+    .tarjeta-sucursal {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .tarjeta-sucursal:hover {
+            box-shadow: 0 4px 12px rgba(0, 128, 0, 0.25);
+            border: 2px solid #86efac;
+        }
+
+    .grid-custom {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .capa4-alerta {
+        color: #b91c1c;
+        font-weight: bold;
+    }
+</style>
+
+<div class="grid-custom">
+    @foreach (var suc in Model)
+    {
+        <div class="tarjeta-sucursal relative">
+            <form asp-controller="AbastoPorCapa" asp-action="Detalle" method="get" class="mb-3">
+                <input type="hidden" name="sucursal" value="@suc" />
+                <button type="submit" class="w-full text-center bg-gray-100 rounded-lg py-3 font-bold text-lg text-gray-800 hover:bg-green-100 transition">
+                    @suc
+                </button>
+            </form>
+
+            <div class="mt-2 text-sm text-gray-700">
+                <p class="font-semibold">Resumen:</p>
+                <ul id="resumen-@suc" class="space-y-1 list-disc list-inside mt-2">
+                    <li>Cargando resumen...</li>
+                </ul>
+            </div>
+
+            <div id="alerta-capa4-@suc" class="hidden absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow"></div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const sucursales = JSON.parse('@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model))');
+
+            for (const suc of sucursales) {
+                const resumenEl = document.getElementById(`resumen-${suc}`);
+                const alertaEl = document.getElementById(`alerta-capa4-${suc}`);
+                try {
+                    const response = await fetch(`/AbastoPorCapa/Resumen?sucursal=${suc}`);
+                    if (!response.ok) throw new Error("Error al obtener resumen");
+
+                    const data = await response.json();
+                    resumenEl.innerHTML = "";
+                    let cantidadCapa4 = 0;
+
+                    // Ordenar capas de mayor a menor cantidad
+                    data.sort((a, b) => b.cantidad - a.cantidad);
+
+                    for (const capa of data) {
+                        const isCapa4 = capa.capa.includes("CAPA 4");
+                        if (isCapa4 && capa.cantidad > 0) cantidadCapa4 = capa.cantidad;
+
+                        const li = document.createElement("li");
+                        if (isCapa4) {
+                            li.classList.add("capa4-alerta");
+                        }
+                        li.textContent = `${capa.capa}: ${capa.cantidad} artículos`;
+                        resumenEl.appendChild(li);
+                    }
+
+                    if (cantidadCapa4 > 0) {
+                        alertaEl.textContent = `⚠ CAPA 4: ${cantidadCapa4}`;
+                        alertaEl.classList.remove("hidden");
+                    }
+                } catch (error) {
+                    resumenEl.innerHTML = "<li>No disponible</li>";
+                }
+            }
+        });
+    </script>
+}

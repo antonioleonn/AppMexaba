@@ -1,0 +1,55 @@
+﻿@model List<ResumenCliente>
+
+@{
+    ViewData["Title"] = "Totales por Cliente";
+}
+
+<h2>Top 20 Clientes por Total Comprado</h2>
+
+<canvas id="graficoTotales" height="100"></canvas>
+
+<table class="table table-bordered mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Código de Barras</th>
+            <th>Total Artículos</th>
+            <th>Total Compras</th>
+            <th>Transacciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.NombreCliente</td>
+                <td>@c.CodBarras</td>
+                <td>@c.TotalArticulos</td>
+                <td>@c.TotalCompras.ToString("C")</td>
+                <td>@c.TotalComprasDistintas</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('graficoTotales');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Select(x => x.NombreCliente))),
+                datasets: [{
+                    label: 'Total Comprado',
+                    data: @Html.Raw(Json.Serialize(Model.Select(x => x.TotalCompras))),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y'
+            }
+        });
+    </script>
+}

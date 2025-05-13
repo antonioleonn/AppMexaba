@@ -1,0 +1,29 @@
+﻿@model AppMexaba.Dtos.VentasVipDto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Editar WhatsApp";
+}
+
+<h2>Editar WhatsApp del Cliente: @Model.CLIENTE</h2>
+
+<form asp-action="GuardarWhatsApp" method="post">
+    <input type="hidden" name="CLIENTE" value="@Model.CLIENTE" />
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-control" value="@Model.NOMBRE" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">WhatsApp</label>
+        <input type="text" class="form-control" name="WHATSAPP" value="@Model.WHATSAPP" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-save"></i> Guardar
+    </button>
+    <a href="/VentasVip/DetalleSucursal?suc=@Model.SUCURSAL" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Cancelar
+    </a>
+</form>

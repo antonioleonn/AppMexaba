@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppMexaba", "AppMexaba.csproj", "{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C8E4874-E835-45A5-B8D6-41E4B297172C}
+	EndGlobalSection
+EndGlobal

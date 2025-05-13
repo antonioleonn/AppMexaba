@@ -1,0 +1,125 @@
+﻿@model List<AppMexaba.Models.alm_art>
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Editar Origen de Artículo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form onsubmit="actualizarOrigen(); return false;">
+    <div class="mb-3">
+        <label class="form-label">Artículo</label>
+        <input class="form-control" value="@ViewBag.Art" readonly />
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Descripción</label>
+            <input class="form-control" value="@ViewBag.Descripcion" readonly />
+        </div>
+    </div>
+
+    <input type="hidden" id="Art" value="@ViewBag.Art" />
+
+    <p><strong>Par:</strong></p>
+    <ul>
+        <li>1 = Resurtido Automático del CEDIS</li>
+        <li>2 = Compra Local</li>
+        <li>3 = Compra Corporativa</li>
+    </ul>
+
+    <div class="row mb-5" id="contenedor-sucursales">
+        @{
+            string[] sucursales = new[] { "ABE", "ACT", "CAB", "CER", "CMA", "COM", "LOM", "TRV", "ZAB", "ZOB", "ACA", "MIB", "MIN", "ORI", "SAB", "SAN", "TBC", "TBE", "TEZ", "TUX", "XAC", "XAL", "ZAM", "ACC", "CCC", "ICC", "XCC", "UCC", "VCC", "ZOC", "CEC", "CMI" };
+        }
+        @foreach (var suc in sucursales)
+        {
+            <div class="col-md-2 mb-4 text-center">
+                <div class="border rounded p-2">
+                    <strong>@suc</strong><br />
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="1" /> 1
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="2" /> 2
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="3" /> 3
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-end mb-5">
+        <button type="submit" class="btn btn-success me-2">Actualizar</button>
+        <a href="/Origen" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const mapaSucursalAlmacen = {
+            ABE: { alm: "M29", salm: "ABE1" }, ACT: { alm: "M46", salm: "ACT1" }, CAB: { alm: "M54", salm: "CAB1" },
+            CER: { alm: "M61", salm: "CER1" }, CMA: { alm: "M37", salm: "CMA1" }, LOM: { alm: "M60", salm: "LOM1" },
+            COM: { alm: "M56", salm: "COM1" }, TRV: { alm: "M49", salm: "TRV1" }, ZAB: { alm: "M45", salm: "ZAB1" },
+            ZOB: { alm: "M08", salm: "ZOB1" }, ACA: { alm: "M07", salm: "ACA1" }, MIB: { alm: "M20", salm: "MIB1" },
+            MIN: { alm: "M06", salm: "MIN1" }, ORI: { alm: "M04", salm: "ORI1" }, SAB: { alm: "M38", salm: "SAB1" },
+            SAN: { alm: "M10", salm: "SAN1" }, TBC: { alm: "A04", salm: "TBC1" }, TBE: { alm: "M15", salm: "BEB2" },
+            TEZ: { alm: "A03", salm: "TEZ1" }, TUX: { alm: "A02", salm: "TUX1" }, XAC: { alm: "M28", salm: "XAC1" },
+            XAL: { alm: "M27", salm: "XAL1" }, ZAM: { alm: "M51", salm: "ZAM1" }, ACC: { alm: "M63", salm: "ACC1" },
+            CCC: { alm: "R12", salm: "CCC1" }, ICC: { alm: "R21", salm: "ICC1" }, XCC: { alm: "M30", salm: "XCC1" },
+            UCC: { alm: "R13", salm: "UCC1" }, VCC: { alm: "R43", salm: "VCC1" }, ZOC: { alm: "R07", salm: "ZOC1" },
+            CEC: { alm: "M52", salm: "CEC1" }, CMI: { alm: "M62", salm: "CMI1" }
+        };
+
+        function actualizarOrigen() {
+            const articulo = document.getElementById('Art').value;
+            if (!articulo) {
+                alert("Debes tener un artículo cargado.");
+                return;
+            }
+
+            let data = [];
+            document.querySelectorAll(".radio-par:checked").forEach(function (radio) {
+                const sucursal = radio.name.replace("par-", "");
+                const par = radio.value;
+                if (mapaSucursalAlmacen[sucursal]) {
+                    const { alm, salm } = mapaSucursalAlmacen[sucursal];
+                    data.push({ alm, salm, art: articulo, par });
+                }
+            });
+
+            if (data.length === 0) {
+                alert("Selecciona al menos un origen para actualizar.");
+                return;
+            }
+
+            fetch("/Origen/Actualizar", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(resp => resp.ok ? location.href = "/Origen?mensaje=actualizado" : alert("Error al actualizar"))
+                .catch(err => console.error(err));
+        }
+
+                window.addEventListener('DOMContentLoaded', () => {
+            const origenes = @Html.Raw(JsonSerializer.Serialize(Model));
+
+            for (const [sucursal, valores] of Object.entries(mapaSucursalAlmacen)) {
+                const origen = origenes.find(o =>
+                    o.alm.trim() === valores.alm &&
+                    o.salm.trim() === valores.salm
+                );
+
+                if (origen && origen.par) {
+                    const radio = document.querySelector(`input[name='par-${sucursal}'][value='${origen.par.trim()}']`);
+                    if (radio) radio.checked = true;
+                }
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,246 @@
+﻿@* Views/VentasVip/DetalleSucursal.cshtml *@
+@model List<AppMexaba.Dtos.VentasVipDto>
+@using System.Text.Json
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Detalle Clientes VIP - " + ViewBag.Sucursal;
+    var totalClientes = Model.Count;
+    var totalCumplen = Model.Count(x => x.ESTATUS == "CUMPLE");
+    var totalNoCumplen = Model.Count(x => x.ESTATUS == "NO CUMPLE");
+    var nombreSucursal = ViewBag.Sucursal as string ?? "Sucursal";
+    var fechaActual = DateTime.Now.ToString("dd_MM_yyyy");
+}
+
+<a href="/VentasVip" class="btn btn-secondary mb-3">
+    <i class="fa-solid fa-arrow-left"></i> Regresar
+</a>
+
+<h2>Clientes VIP - @ViewBag.Sucursal</h2>
+
+<div class="mb-3">
+    <span class="badge bg-primary">Total Clientes VIP: <strong id="totalClientes">@totalClientes</strong></span>
+    <span class="badge bg-success">Cumplen: <strong id="totalCumplen">@totalCumplen</strong></span>
+    <span class="badge bg-danger">No Cumplen: <strong id="totalNoCumplen">@totalNoCumplen</strong></span>
+</div>
+
+<div class="mb-3 d-flex flex-wrap gap-2">
+    <button id="btnToggle" class="btn btn-outline-primary">
+        <i class="fa-solid fa-chart-column"></i> Mostrar Gráfica
+    </button>
+
+    <button id="btnExportarTabla" class="btn btn-success">
+        <i class="fa-solid fa-file-excel"></i> Exportar Tabla a Excel
+    </button>
+
+    <button id="btnExportarPDF" class="btn btn-outline-danger">
+        <i class="fa-solid fa-file-pdf"></i> Exportar Gráfica como PDF
+    </button>
+
+    <div class="d-flex align-items-center ms-2">
+        <label for="rangoClientes" class="me-2">Top:</label>
+        <select id="rangoClientes" class="form-select form-select-sm w-auto">
+            <option value="all" selected>Todos</option>
+            <option value="20">Top 20</option>
+            <option value="50">Top 50</option>
+            <option value="100">Top 100</option>
+        </select>
+    </div>
+    <div class="d-flex align-items-center ms-2">
+        <label for="filtroEstatus" class="me-2">Estatus:</label>
+        <select id="filtroEstatus" class="form-select form-select-sm w-auto">
+            <option value="NO CUMPLE" selected>NO CUMPLE</option>
+            <option value="all">Todos</option>
+            <option value="CUMPLE">CUMPLE</option>
+        </select>
+    </div>
+</div>
+
+<div id="tablaClientes">
+    <table id="tablaExportable" class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Cliente</th>
+                <th>Nombre</th>
+                <th>WhatsApp</th>
+                <th>Giro</th>
+                <th>Última Venta</th>
+                <th>Venta</th>
+                <th>Cuota</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaBody">
+        </tbody>
+    </table>
+</div>
+
+<div id="graficaClientes" class="d-none">
+    <div style="overflow-x:auto">
+        <canvas id="graficoEstatus" height="400"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const nombreSucursal = "@nombreSucursal";
+        const fechaActual = "@fechaActual";
+
+        const btnToggle = document.getElementById('btnToggle');
+        const tabla = document.getElementById('tablaClientes');
+        const grafica = document.getElementById('graficaClientes');
+        const selectRango = document.getElementById('rangoClientes');
+        const filtroEstatus = document.getElementById('filtroEstatus');
+        const btnExportarTabla = document.getElementById('btnExportarTabla');
+        const btnExportarPDF = document.getElementById('btnExportarPDF');
+        const totalClientesSpan = document.getElementById('totalClientes');
+        const totalCumplenSpan = document.getElementById('totalCumplen');
+        const totalNoCumplenSpan = document.getElementById('totalNoCumplen');
+        const dataFull = @Html.Raw(JsonSerializer.Serialize(Model));
+
+        let chartInstance;
+
+        btnToggle.addEventListener('click', () => {
+            tabla.classList.toggle('d-none');
+            grafica.classList.toggle('d-none');
+
+            if (!grafica.classList.contains('d-none')) {
+                btnToggle.innerHTML = '<i class="fa-solid fa-table"></i> Mostrar Tabla';
+                renderGrafica();
+            } else {
+                btnToggle.innerHTML = '<i class="fa-solid fa-chart-column"></i> Mostrar Gráfica';
+            }
+        });
+
+        selectRango.addEventListener('change', () => {
+            renderGrafica();
+            renderTabla();
+        });
+        filtroEstatus.addEventListener('change', () => {
+            renderGrafica();
+            renderTabla();
+        });
+        btnExportarTabla.addEventListener('click', exportarTablaFiltrada);
+        btnExportarPDF.addEventListener('click', exportarGraficaComoPDF);
+
+        function getDataFiltrada() {
+            const estatus = filtroEstatus.value;
+            let filtrado = dataFull;
+            if (estatus !== 'all') filtrado = filtrado.filter(x => x.ESTATUS === estatus);
+            filtrado.sort((a, b) => b.VENTA - a.VENTA);
+            const top = selectRango.value === 'all' ? filtrado.length : parseInt(selectRango.value);
+            return filtrado.slice(0, top);
+        }
+
+        function renderTabla() {
+            const tablaBody = document.getElementById('tablaBody');
+            tablaBody.innerHTML = '';
+            const data = getDataFiltrada();
+
+            data.forEach(x => {
+                tablaBody.innerHTML += `<tr>
+                    <td>${x.CLIENTE}</td>
+                    <td>${x.NOMBRE}</td>
+                    <td>${x.WHATSAPP}</td>
+                    <td>${x.GIRO}</td>
+                    <td>${x.ULTIMA_VENTA}</td>
+                    <td>${x.VENTA.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</td>
+                    <td>${x.CUOTA.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</td>
+                    <td class="${x.ESTATUS === 'CUMPLE' ? 'text-success fw-bold' : 'text-danger fw-bold'}">${x.ESTATUS}</td>
+                    <td><a href="/VentasVip/EditarWhatsApp?cliente=${x.CLIENTE}" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen"></i> Editar</a></td>
+                </tr>`;
+            });
+
+            totalClientesSpan.textContent = dataFull.length;
+            totalCumplenSpan.textContent = dataFull.filter(x => x.ESTATUS === 'CUMPLE').length;
+            totalNoCumplenSpan.textContent = dataFull.filter(x => x.ESTATUS === 'NO CUMPLE').length;
+        }
+
+        function renderGrafica() {
+            const data = getDataFiltrada();
+            const labels = data.map(x => x.NOMBRE);
+            const ventas = data.map(x => x.VENTA);
+            const cuotas = data.map(x => x.CUOTA);
+
+            const ctx = document.getElementById('graficoEstatus').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Venta', data: ventas, backgroundColor: '#0d6efd' },
+                        { label: 'Cuota', data: cuotas, backgroundColor: '#ffc107' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Ventas vs Cuota por Cliente' }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxRotation: 90,
+                                minRotation: 45,
+                                autoSkip: false,
+                                font: { size: 8 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportarGraficaComoPDF() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'landscape' });
+            const canvas = document.getElementById('graficoEstatus');
+            const imgData = canvas.toDataURL('image/png');
+
+            pdf.setFontSize(16);
+            pdf.text(`Clientes VIP - ${nombreSucursal} (${fechaActual})`, 10, 10);
+            pdf.addImage(imgData, 'PNG', 10, 20, 270, 150);
+            pdf.save(`grafica_clientes_vip_${nombreSucursal}_${fechaActual}.pdf`);
+        }
+
+        function exportarTablaFiltrada() {
+            const data = getDataFiltrada();
+
+            let tablaHTML = `<table border="1">
+                <tr><th colspan="8">Clientes VIP - ${nombreSucursal} (${fechaActual})</th></tr>
+                <tr><th>Cliente</th><th>Nombre</th><th>WhatsApp</th><th>Giro</th><th>Última Venta</th><th>Venta</th><th>Cuota</th><th>Estatus</th></tr>`;
+
+            data.forEach(x => {
+                tablaHTML += `<tr>
+                    <td>${x.CLIENTE}</td>
+                    <td>${x.NOMBRE}</td>
+                    <td>${x.WHATSAPP}</td>
+                    <td>${x.GIRO}</td>
+                    <td>${x.ULTIMA_VENTA}</td>
+                    <td>${x.VENTA.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</td>
+                    <td>${x.CUOTA.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</td>
+                    <td>${x.ESTATUS}</td>
+                </tr>`;
+            });
+
+            tablaHTML += '</table>';
+            const nombreArchivo = `ClientesVIP_${nombreSucursal}_${fechaActual}.xls`;
+            const dataTipo = 'application/vnd.ms-excel';
+
+            const enlace = document.createElement('a');
+            enlace.href = 'data:' + dataTipo + ', ' + encodeURIComponent(tablaHTML);
+            enlace.download = nombreArchivo;
+            enlace.click();
+        }
+
+        // Render inicial
+        renderTabla();
+        renderGrafica();
+    </script>
+}

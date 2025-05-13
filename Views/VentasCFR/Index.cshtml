@@ -1,0 +1,227 @@
+﻿@model DashboardVentasViewModel
+@{
+    ViewData["Title"] = "Dashboard Mexaba Socio";
+    var fecha = Model.FechaSeleccionada.ToString("dd/MM/yyyy");
+}
+
+<div class="bg-primary text-white py-2 px-3 mb-3 text-uppercase text-center" style="font-family: 'League Spartan', sans-serif; letter-spacing: 1px; font-size: 1.6rem;">
+    Socio Mexaba
+</div>
+@* 
+<h2 class="mb-4">📊 Dashboard Mexaba Socio - @fecha</h2>
+*@
+<p class="text-muted">
+    Mostrando ventas del <strong>@Model.FechaInicio.ToString("dd/MM/yyyy")</strong> al
+    <strong>@Model.FechaFin.ToString("dd/MM/yyyy")</strong>
+</p>
+<div class="alert alert-success d-flex justify-content-between align-items-center">
+    <div>💰 <strong>Total de ventas (Socio Mexaba)</strong></div>
+    <div class="fs-4 fw-bold">@Model.TotalGeneralVentas.ToString("C")</div>
+</div>
+
+<h5>🗓️ Selección de fecha</h5>
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label>Por día</label>
+        <input type="date" name="fecha" class="form-control"
+               value="@(Model.FechaSeleccionada.ToString("yyyy-MM-dd"))" />
+    </div>
+
+    <div class="col-md-4">
+        <label>Desde</label>
+        <input type="date" name="desde" class="form-control"
+               value="@(Context.Request.Query["desde"])" />
+    </div>
+    <div class="col-md-4">
+        <label>Hasta</label>
+        <input type="date" name="hasta" class="form-control"
+               value="@(Context.Request.Query["hasta"])" />
+    </div>
+
+    <div class="col-md-4">
+        <label>Mes</label>
+        <select name="mes" class="form-select">
+            <option value="">--</option>
+            @for (int m = 1; m <= 12; m++)
+            {
+                bool isSelected = Context.Request.Query["mes"] == m.ToString();
+                <option value="@m" selected="@(isSelected ? "selected" : null)">
+                    @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)
+                </option>
+            }
+
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label>Año</label>
+        <select name="anio" class="form-select">
+            @{
+                int añoActual = DateTime.Today.Year;
+                for (int a = añoActual - 2; a <= añoActual; a++)
+                {
+                    bool isSelected = Context.Request.Query["anio"] == a.ToString();
+                    <option value="@a" selected="@(isSelected ? "selected" : null)">@a</option>
+                }
+            }
+
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label>Sucursal</label>
+        <input type="text" name="sucursal" class="form-control"
+               placeholder="Ej: VCC" value="@(Context.Request.Query["sucursal"])" />
+    </div>
+
+    <div class="col-md-4">
+        <label>Tipo de cliente</label>
+        <select name="tipoCliente" class="form-select">
+            <option value="">Todos</option>
+            <option value="C" selected="@(Context.Request.Query["tipoCliente"] == "C" ? "selected" : null)">CFR</option>
+            <option value="N" selected="@(Context.Request.Query["tipoCliente"] == "N" ? "selected" : null)">No CFR</option>
+
+        </select>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">🔍 Filtrar</button>
+    </div>
+</form>
+
+
+
+<div class="col-12 mb-5">
+    <h5 class="text-info">Ventas Registradas por Sucursal</h5>
+    <canvas id="comparativaChart" height="160" class="mb-4"></canvas>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Sucursal</th>
+                <th>Ventas Mexaba Socio</th>
+                <th>Ventas Netas</th>
+                <th>% Registrado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var c in Model.ComparativaSocioSucursal)
+            {
+                <tr>
+                    <td>@c.Sucursal</td>
+                    <td>@c.MexabaSocio.ToString("C")</td>
+                    <td>@c.VentasSucursal.ToString("C")</td>
+                    <td>@c.PorcentajeRegistrado.ToString("0.00")%</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            @{
+                var totalSocio = Model.ComparativaSocioSucursal.Sum(c => c.MexabaSocio);
+                var totalNeto = Model.ComparativaSocioSucursal.Sum(c => c.VentasSucursal);
+                var porcentajeTotal = totalNeto > 0 ? (totalSocio / totalNeto) * 100 : 0;
+            }
+            <tr class="bg-info-subtle text-dark fw-bold">
+                <td>Total general</td>
+                <td>@totalSocio.ToString("C")</td>
+                <td>@totalNeto.ToString("C")</td>
+                <td>@porcentajeTotal.ToString("0.00")%</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <h5 class="text-primary">Ventas por Segmento</h5>
+        <canvas id="segmentoChart" height="220" class="mb-3"></canvas>
+        <table class="table table-sm mt-3">
+            <thead class="table-dark">
+                <tr><th>Segmento</th><th>Ventas</th><th>%</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.ParticipacionSegmento)
+                {
+                    <tr>
+                        <td>@s.Segmento</td>
+                        <td>@s.TotalVentas.ToString("C")</td>
+                        <td>@s.Porcentaje.ToString("0.0")%</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h5 class="text-success">Ventas por Sucursal</h5>
+        <canvas id="sucursalChart" height="220" class="mb-3"></canvas>
+        <table class="table table-sm mt-3">
+            <thead class="table-dark">
+                <tr><th>Sucursal</th><th>Ventas</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.VentasSucursal)
+                {
+                    <tr>
+                        <td>@s.Sucursal</td>
+                        <td>@s.TotalVentas.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        new Chart(document.getElementById('segmentoChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.ParticipacionSegmento.Select(s => s.Segmento))),
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: @Html.Raw(Json.Serialize(Model.ParticipacionSegmento.Select(s => s.TotalVentas))),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        new Chart(document.getElementById('sucursalChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.VentasSucursal.Select(s => s.Sucursal))),
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: @Html.Raw(Json.Serialize(Model.VentasSucursal.Select(s => s.TotalVentas))),
+                    backgroundColor: 'rgba(40, 167, 69, 0.6)'
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        new Chart(document.getElementById('comparativaChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.ComparativaSocioSucursal.Select(s => s.Sucursal))),
+                datasets: [{
+                    label: 'Porcentaje Registrado',
+                    data: @Html.Raw(Json.Serialize(Model.ComparativaSocioSucursal.Select(s => s.PorcentajeRegistrado))),
+                    backgroundColor: 'rgba(255, 193, 7, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { max: 100, ticks: { callback: value => value + "%" } }
+                }
+            }
+        });
+    </script>
+}

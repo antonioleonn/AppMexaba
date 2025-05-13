@@ -1,0 +1,101 @@
+﻿@model List<AppMexaba.Models.alm_art>
+@{
+    ViewData["Title"] = "Catálogos de Orígenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int total = ViewBag.Total;
+    int pageSize = 50;
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+    var pagedData = Model;
+    string busqueda = ViewBag.Busqueda ?? "";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p><strong>Total de artículos:</strong> @total</p>
+
+<form method="get" class="mb-3 d-flex gap-2">
+    <input name="busqueda" class="form-control" placeholder="Buscar por código" value="@busqueda" />
+    <button type="submit" class="btn btn-primary">🔍</button>
+    <a href="/Origen" class="btn btn-outline-secondary">Limpiar</a>
+</form>
+
+<a href="/Origen/Crear" class="btn btn-primary mb-3">+ Crear Nuevo</a>
+
+<table class="table table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>alm</th>
+            <th>salm</th>
+            <th>art</th>
+            <th>par</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tablaOrigenes">
+        @foreach (var item in pagedData)
+        {
+            <tr>
+                <td>@item.alm</td>
+                <td>@item.salm</td>
+                <td>@item.art</td>
+                <td>@item.par</td>
+                <td>
+                    <a href="/Origen/Editar?alm=@item.alm&salm=@item.salm&art=@item.art" class="btn btn-warning btn-sm">✏️ Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Paginación">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == page ? "active" : "")">
+                <a class="page-link" href="?page=@i&busqueda=@busqueda">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+        <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["Mensaje"]
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function buscar() {
+            const filtro = document.getElementById("busquedaCodigo").value.toLowerCase();
+            document.querySelectorAll("#tablaOrigenes tr").forEach(row => {
+                const art = row.children[2].innerText.toLowerCase();
+                row.style.display = art.includes(filtro) ? "" : "none";
+            });
+        }
+
+        function limpiar() {
+            document.getElementById("busquedaCodigo").value = "";
+            buscar();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const toastEl = document.querySelector('.toast');
+            if (toastEl) {
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+    </script>
+}

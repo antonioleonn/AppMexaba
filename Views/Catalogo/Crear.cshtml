@@ -1,0 +1,163 @@
+﻿@model ArticuloComprador
+@{
+    ViewBag.Title = ViewContext.RouteData.Values["action"].ToString() == "Crear" ? "Crear Artículo" : "Editar Artículo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post" onsubmit="return validarFormulario()">
+    <div class="mb-3">
+        <label class="form-label">Artículo</label>
+        <select class="form-select" id="select-articulo" onchange="asignarArticulo(this.value)">
+            @if (!string.IsNullOrEmpty(Model.Art))
+            {
+                var artTrim = Model.Art?.Trim() ?? "";
+                var des1Trim = Model.Des1?.Trim() ?? "";
+                var provTrim = Model.Proveedor?.Trim() ?? "";
+                var numProvTrim = Model.NumProveedor?.Trim() ?? "";
+                var valArticulo = $"{artTrim}|{des1Trim}|{numProvTrim}|{provTrim}";
+                <option value="@valArticulo" selected>@($"{artTrim} - {des1Trim}")</option>
+            }
+        </select>
+
+        <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="limpiarArticulo()">Limpiar selección</button>
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Descripción</label>
+            <input class="form-control" id="input-des1" value="@Model.Des1" readonly />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Proveedor</label>
+            <input class="form-control" id="input-proveedor" value="@Model.Proveedor" readonly />
+        </div>
+    </div>
+
+    <input type="hidden" id="Art" name="Art" value="@Model.Art" />
+    <input type="hidden" id="Des1" name="Des1" value="@Model.Des1" />
+    <input type="hidden" id="NumProveedor" name="NumProveedor" value="@Model.NumProveedor" />
+    <input type="hidden" id="Proveedor" name="Proveedor" value="@Model.Proveedor" />
+
+    <div class="mb-3">
+        <label class="form-label">Comprador</label>
+        <select class="form-select" id="select-comprador" onchange="asignarComprador(this.value)">
+            @if (!string.IsNullOrEmpty(Model.Comprador))
+            {
+                var compTrim = Model.Comprador?.Trim() ?? "";
+                var cveTrim = Model.Cve?.Trim() ?? "";
+                var usuarioTrim = Model.Usuario?.Trim() ?? "";
+                var numTrim = Model.NumComprador?.Trim() ?? "";
+                var valComprador = $"{compTrim}|{cveTrim}|{usuarioTrim}|{numTrim}";
+                <option value="@valComprador" selected>@compTrim</option>
+            }
+        </select>
+
+        <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="limpiarComprador()">Limpiar selección</button>
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Clave Comprador</label>
+            <input class="form-control" id="input-cve" value="@Model.Cve" readonly />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Usuario</label>
+            <input class="form-control" id="input-usuario" value="@Model.Usuario" readonly />
+        </div>
+    </div>
+
+    <input type="hidden" id="Comprador" name="Comprador" value="@Model.Comprador" />
+    <input type="hidden" id="Cve" name="Cve" value="@Model.Cve" />
+    <input type="hidden" id="Usuario" name="Usuario" value="@Model.Usuario" />
+    <input type="hidden" id="NumComprador" name="NumComprador" value="@Model.NumComprador" />
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="/Catalogo" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#select-articulo').select2({
+                placeholder: "Selecciona artículo",
+                ajax: {
+                    url: '/api/catalogo/buscar-articulos',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return { q: params.term };
+                    },
+                    processResults: function (data) {
+                        return { results: data.results };
+                    },
+                    cache: true
+                },
+                width: '100%',
+                minimumInputLength: 1,
+                tags: false
+            });
+
+            $('#select-comprador').select2({
+                placeholder: "Selecciona comprador",
+                ajax: {
+                    url: '/api/catalogo/buscar-compradores',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return { q: params.term };
+                    },
+                    processResults: function (data) {
+                        return { results: data.results };
+                    },
+                    cache: true
+                },
+                width: '100%',
+                minimumInputLength: 1,
+                tags: false
+            });
+        });
+
+        function asignarArticulo(valor) {
+            if (!valor) return;
+            const partes = valor.split('|');
+            $('#Art').val(partes[0]);
+            $('#Des1').val(partes[1]);
+            $('#NumProveedor').val(partes[2]);
+            $('#Proveedor').val(partes[3]);
+            $('#input-des1').val(partes[1]);
+            $('#input-proveedor').val(partes[3]);
+        }
+
+        function asignarComprador(valor) {
+            if (!valor) return;
+            const partes = valor.split('|');
+            $('#Comprador').val(partes[0]);
+            $('#Cve').val(partes[1]);
+            $('#Usuario').val(partes[2]);
+            $('#NumComprador').val(partes[3]);
+            $('#input-cve').val(partes[1]);
+            $('#input-usuario').val(partes[2]);
+        }
+
+        function limpiarArticulo() {
+            $('#select-articulo').val(null).trigger('change');
+            $('#Art, #Des1, #NumProveedor, #Proveedor, #input-des1, #input-proveedor').val('');
+        }
+
+        function limpiarComprador() {
+            $('#select-comprador').val(null).trigger('change');
+            $('#Comprador, #Cve, #Usuario, #NumComprador, #input-cve, #input-usuario').val('');
+        }
+
+        function validarFormulario() {
+            const art = $('#Art').val();
+            const comp = $('#Comprador').val();
+            if (!art || !comp) {
+                alert('Por favor selecciona un artículo y un comprador antes de guardar.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

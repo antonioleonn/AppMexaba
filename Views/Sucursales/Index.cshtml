@@ -1,0 +1,119 @@
+﻿@model Dictionary<string, List<AppMexaba.Models.Sucursal>>
+@{
+    ViewBag.Title = "Monitoreo de Sucursales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px;">
+    <div class="row">
+        <!-- Contenido Principal -->
+        <div class="col">
+            <h2 class="text-center mb-4">Monitoreo de Sucursales</h2><br/>
+            <h5 class="text-center mb-4">Para reportes de internet Telmex en el CASE 800 2261500</h5>
+
+            @foreach (var grupo in Model)
+            {
+                <h3 class="mt-5">@grupo.Key</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover mt-3 text-center">
+                        <thead>
+                            <tr>
+                                <th>Sucursales</th>
+                                <th>Servidor Encendido</th>
+                                <th>Conexión Internet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sucursal in grupo.Value)
+                            {
+                                <tr>
+                                    <td class="text-start">
+                                        @if (sucursal.Cajas != null && sucursal.Cajas.Any())
+                                        {
+                                            <a data-bs-toggle="collapse" href="#cajas-@sucursal.Nombre.Replace(" ", "")" role="button" aria-expanded="false" aria-controls="cajas-@sucursal.Nombre.Replace(" ", "")">
+                                                <strong>@sucursal.Nombre</strong> <span class="text-secondary">▼</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <strong>@sucursal.Nombre</strong>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="circle" style="background-color:@(sucursal.ServidorActivo ? "#28a745" : "#dc3545");"></div>
+                                    </td>
+                                    <td>
+                                        <div class="circle" style="background-color:@(sucursal.InternetActivo ? "#28a745" : "#dc3545");"></div>
+                                    </td>
+                                </tr>
+
+                                @if (sucursal.Cajas != null && sucursal.Cajas.Any())
+                                {
+                                    <tr class="collapse bg-light" id="cajas-@sucursal.Nombre.Replace(" ", "")">
+                                        <td colspan="3">
+                                            <div class="mb-2 mt-2 fw-bold text-primary">Puntos de Venta</div>
+                                            <table class="table table-sm table-bordered mb-0 text-center">
+                                                <thead class="table-secondary">
+                                                    <tr>
+                                                        <th>Caja</th>
+                                                        <th>Estatus</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var caja in sucursal.Cajas)
+                                                    {
+                                                        <tr>
+                                                            <td>@caja.Nombre</td>
+                                                            <td>
+                                                                <div class="circle" style="background-color:@(caja.Activa ? "#28a745" : "#dc3545");"></div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <!-- Botón de Actualización al final y centrado con espacio adicional -->
+    <div class="row mt-5">
+        <div class="col text-center mb-5">
+            <form method="post" action="/Sucursales/Actualizar">
+                <button class="btn btn-primary btn-sm">Actualizar Estado</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .circle {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        transition: transform 0.3s;
+    }
+
+        .circle:hover {
+            transform: scale(1.2);
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #e9ecef;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #007bff;
+        transform: scale(1.05);
+    }
+</style>

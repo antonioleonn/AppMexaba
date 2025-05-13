@@ -1,0 +1,41 @@
+﻿@model List<VentaCFR>
+
+@{
+    ViewData["Title"] = "Detalle de Transacciones";
+}
+
+<h2>Detalle de Ventas Cliente Frecuente</h2>
+
+<table class="table table-hover table-sm">
+    <thead class="table-secondary">
+        <tr>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Sucursal</th>
+            <th>Caja</th>
+            <th>Transacción</th>
+            <th>Cliente</th>
+            <th>Artículo</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Total con Imp.</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <td>@v.TipoVenta</td>
+                <td>@v.Fecha.ToString("yyyy-MM-dd")</td>
+                <td>@v.Sucursal</td>
+                <td>@v.Caja</td>
+                <td>@v.NumTransaccion</td>
+                <td>@v.NombreCliente</td>
+                <td>@v.DescripcionArticulo</td>
+                <td>@v.Cantidad</td>
+                <td>@v.Subtotal.ToString("C")</td>
+                <td>@v.SubtotalConImp.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,268 @@
+﻿@{
+    int? perfil = Context.Session.GetInt32("Perfil");
+    var nombre = Context.Session.GetString("Nombre") ?? "Usuario";
+    var sucursal = Context.Session.GetString("Sucursal") ?? "-";
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - AppMexaba</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+        overflow-x: hidden;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        font-size: 14px;
+        background-color: #f0f0f0;
+        }
+
+        .sidebar {
+        position: fixed;
+        height: 100vh;
+        width: 220px;
+        background-color: #343a40;
+        padding-top: 20px;
+        transition: width 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 1030; /* Mayor que el footer */
+        }
+
+        .sidebar a {
+        color: white;
+        padding: 12px 20px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s, padding-left 0.3s;
+        }
+
+        .sidebar a:hover {
+        background-color: #495057;
+        padding-left: 25px;
+        }
+
+        .sidebar h4 {
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #495057;
+        }
+
+        .content {
+        margin-left: 220px;
+        padding: 20px;
+        transition: margin-left 0.3s;
+        min-height: 88vh;
+        }
+
+        .footer {
+        text-align: center;
+        font-size: 12px;
+        color: gray;
+        padding: 10px;
+        background-color: #343a40;
+        color: white;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid #495057;
+        }
+
+        .btn-primary {
+        font-size: 13px;
+        padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar d-flex flex-column justify-content-between">
+    <div>
+        <h4>AppMexaba</h4>
+
+        <a href="/Home" class="d-block px-3 py-2 text-white bg-dark border-top">
+            <i class="fa-solid fa-house me-2"></i> Inicio
+        </a>
+
+        @if (perfil == 1)
+        {
+            <!-- Sistemas -->
+            <div class="accordion" id="menuSistemas">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingSistemas">
+                        <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSistemas" aria-expanded="false" aria-controls="collapseSistemas">
+                            <i class="fa-solid fa-microchip me-2"></i> Sistemas
+                        </button>
+                    </h2>
+                    <div id="collapseSistemas" class="accordion-collapse collapse" aria-labelledby="headingSistemas" data-bs-parent="#menuSistemas">
+                        <div class="accordion-body p-0">
+                            <a href="/Sucursales" class="d-block ps-5 py-2 text-white bg-dark border-top">Monitoreo Red Sucursales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (perfil == 1 || perfil == 5)
+        {
+            <!-- Catálogo -->
+            <div class="accordion" id="menuCatalogo">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingCatalogo">
+                        <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCatalogo" aria-expanded="false" aria-controls="collapseCatalogo">
+                            <i class="fa-solid fa-list-check me-2"></i> Gestión Catálogo
+                        </button>
+                    </h2>
+                    <div id="collapseCatalogo" class="accordion-collapse collapse" aria-labelledby="headingCatalogo" data-bs-parent="#menuCatalogo">
+                        <div class="accordion-body p-0">
+                            <a href="/Catalogo" class="d-block ps-5 py-2 text-white bg-dark border-top">Asignación Comprador</a>
+                            <a href="/Origen" class="d-block ps-5 py-2 text-white bg-dark border-top">Orígenes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (perfil == 1 || perfil == 5)
+        {
+            <!-- Inventario -->
+            <div class="accordion" id="menuInventario">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingInventario">
+                        <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventario" aria-expanded="false" aria-controls="collapseInventario">
+                            <i class="fa-solid fa-warehouse me-2"></i> Inventario
+                        </button>
+                    </h2>
+                    <div id="collapseInventario" class="accordion-collapse collapse" aria-labelledby="headingInventario" data-bs-parent="#menuInventario">
+                        <div class="accordion-body p-0">
+                            <a href="/InventarioSucursal" class="d-block ps-5 py-2 text-white bg-dark border-top">Inventario en Sucursal</a>
+                            <a href="/AbastoPorCapa/Index" class="d-block ps-5 py-2 text-white bg-dark border-top">Abasto por Capas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (perfil == 1 || perfil == 2)
+        {
+            <!-- Clientes -->
+            <div class="accordion" id="menuClientes">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingClientes">
+                        <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClientes" aria-expanded="false" aria-controls="collapseClientes">
+                            <i class="fa-solid fa-user-group me-2"></i> Clientes
+                        </button>
+                    </h2>
+                    <div id="collapseClientes" class="accordion-collapse collapse" aria-labelledby="headingClientes" data-bs-parent="#menuClientes">
+                        <div class="accordion-body p-0">
+                            <a href="/VentasVip" class="d-block ps-5 py-2 text-white bg-dark border-top">Clientes VIP</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (perfil == 1 || perfil == 3)
+        {
+            <!-- Innovacion -->
+            <div class="accordion" id="menuInnovacion">
+                <div class="accordion-item bg-dark border-0">
+                    <h2 class="accordion-header" id="headingInnovacion">
+                        <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInnovacion" aria-expanded="false" aria-controls="collapseInnovacion">
+                            <i class="fa-solid fa-database me-2"></i> Innovacion
+                        </button>
+                    </h2>
+                    <div id="collapseInnovacion" class="accordion-collapse collapse" aria-labelledby="headingInnovacion" data-bs-parent="#menuInnovacion">
+                        <div class="accordion-body p-0">
+                            <a href="/VentasCFR" class="d-block ps-5 py-2 text-white bg-dark border-top">Clientes Socio Mexaba</a>
+                            <a href="/InnovacionProveedores" class="d-block ps-5 py-2 text-white bg-dark border-top">Proveedores Mexaba</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (perfil == 1 || perfil == 6)
+        {
+            <!-- Kiosko -->
+            <div class="accordion" id="menuKiosko">
+                <div class="accordion-item bg-dark border-0">
+                <h2 class="accordion-header" id="headingKiosko">
+                    <button class="accordion-button collapsed bg-dark text-white ps-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKiosko" aria-expanded="false" aria-controls="collapseKiosko">
+                        <i class="fa-solid fa-ticket me-2"></i> Kiosko
+                    </button>
+                </h2>
+                <div id="collapseKiosko" class="accordion-collapse collapse" aria-labelledby="headingKiosko" data-bs-parent="#menuKiosko">
+                    <div class="accordion-body p-0">
+                        <a href="/KioskoMexaba" class="d-block ps-5 py-2 text-white bg-dark border-top">Ofertas Clientes Mexaba</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        </div>
+
+        <div class="text-white p-3 border-top border-secondary bg-dark small" style="font-size: 12px;">
+            <div>
+                <i class="fa-solid fa-user-circle me-2"></i>@nombre
+            </div>
+            <div>
+                <i class="fa-solid fa-store me-2"></i>Sucursal: @sucursal
+            </div>
+            <div class="mt-2">
+                <a href="/Login/Logout" class="btn btn-sm btn-outline-light w-100" title="Salir de la sesión">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Cerrar sesión
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="content">
+        @RenderBody()
+
+        @if (ViewBag.Mensaje != null)
+        {
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @ViewBag.Mensaje
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        }
+        @if (ViewBag.Error != null)
+        {
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @ViewBag.Error
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="footer">Aplicación Web Mexaba 2025</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

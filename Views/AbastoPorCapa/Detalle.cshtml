@@ -1,0 +1,170 @@
+﻿@model List<AppMexaba.Dtos.AbastoCapaDto>
+@{
+    ViewData["Title"] = $"Abasto por Capa - {ViewBag.Sucursal}";
+
+    var conteoCapas = Model
+        .GroupBy(x => x.Capas)
+        .Select(g => new { Capa = g.Key, Total = g.Count() })
+        .OrderBy(x => x.Capa)
+        .ToList();
+
+    var capa4Data = Model
+        .Where(x => x.Capas.Contains("CAPA 4"))
+        .GroupBy(x => x.Descripcion)
+        .Select(g => new { Descripcion = g.Key, Total = g.Count() })
+        .OrderByDescending(g => g.Total)
+        .Take(10);
+
+    var modelOrdenado = Model.OrderBy(x => x.Capas switch
+    {
+        "CAPA 4 MAYOR A 90 DIAS" => 1,
+        "CAPA 3 MAYOR A 60 Y HASTA 90 DIAS" => 2,
+        "CAPA 2 MAYOR A 30 Y HASTA 60 DIAS" => 3,
+        "CAPA 1  HASTA 30 DIAS" => 4,
+        _ => 5
+    }).ToList();
+
+    var sucursalNombre = ViewBag.Sucursal.ToString();
+    var fechaActual = DateTime.Now.ToString("dd_MM_yyyy");
+}
+
+<a asp-action="Index" class="btn btn-secondary mb-3">← Regresar</a>
+
+<h2 class="mb-3">Abasto por Capa - @ViewBag.Sucursal</h2>
+
+
+
+
+
+<div id="contenedorTabla">
+    <table class="table table-bordered table-striped table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Subalmacén</th>
+                <th>Existencia</th>
+                <th>Venta Promedio</th>
+                <th>Días Inv</th>
+                <th>Capa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in modelOrdenado)
+            {
+                var claseFila = item.Capas switch
+                {
+                    "CAPA 4 MAYOR A 90 DIAS" => "table-danger",
+                    "CAPA 3 MAYOR A 60 Y HASTA 90 DIAS" => "table-warning",
+                    "CAPA 2 MAYOR A 30 Y HASTA 60 DIAS" => "table-info",
+                    "CAPA 1  HASTA 30 DIAS" => "table-success",
+                    _ => ""
+                };
+
+                <tr class="@claseFila">
+                    <td>@item.Codigo</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Almacen</td>
+                    <td>@item.Existencia.ToString("N2")</td>
+                    <td>@item.VtaProm.ToString("N2")</td>
+                    <td>@item.DiasInv.ToString("N1")</td>
+                    <td>@item.Capas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="contenedorGrafica" class="d-none">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <canvas id="graficaCapas" width="400" height="400"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="graficaCapa4" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const btnToggle = document.getElementById('btnToggle');
+        const contenedorTabla = document.getElementById('contenedorTabla');
+        const contenedorGrafica = document.getElementById('contenedorGrafica');
+
+        btnToggle.addEventListener('click', () => {
+            contenedorTabla.classList.toggle('d-none');
+            contenedorGrafica.classList.toggle('d-none');
+            btnToggle.innerHTML = contenedorGrafica.classList.contains('d-none')
+                ? '<i class="fa-solid fa-chart-column"></i> Mostrar Gráfica'
+                : '<i class="fa-solid fa-table"></i> Mostrar Tabla';
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('graficaCapas').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [@string.Join(",", conteoCapas.Select(c => $"'{c.Capa}'"))],
+                    datasets: [{
+                        label: 'Artículos por Capa',
+                        data: [@string.Join(",", conteoCapas.Select(c => c.Total))],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Distribución por Capas' }
+                    }
+                }
+            });
+
+            const ctx4 = document.getElementById('graficaCapa4').getContext('2d');
+            new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: [@string.Join(",", capa4Data.Select(c => $"'{c.Descripcion}'"))],
+                    datasets: [{
+                        label: 'Top 10 Artículos en Capa 4',
+                        data: [@string.Join(",", capa4Data.Select(c => c.Total))],
+                        backgroundColor: 'rgba(220, 53, 69, 0.6)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Artículos en Capa 4' }
+                    }
+                }
+            });
+        });
+
+        document.getElementById('btnExportarTabla').addEventListener('click', () => {
+            const tablaHTML = document.querySelector('#contenedorTabla table').outerHTML;
+            const blob = new Blob([tablaHTML], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `AbastoPorCapa_${'@ViewBag.Sucursal'}.xls`;
+            link.click();
+        });
+
+        document.getElementById('btnExportarPDF').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('l');
+            const canvas = document.getElementById('graficaCapa4');
+            const imgData = canvas.toDataURL('image/png');
+            pdf.setFontSize(16);
+            pdf.text("Top 10 Artículos en Capa 4 - @ViewBag.Sucursal", 10, 10);
+            pdf.addImage(imgData, 'PNG', 10, 20, 270, 150);
+            pdf.save(`grafica_capa4_${'@ViewBag.Sucursal'}.pdf`);
+        });
+    </script>
+}

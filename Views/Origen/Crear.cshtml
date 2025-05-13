@@ -1,0 +1,169 @@
+﻿@model AppMexaba.Models.alm_art
+@{
+    ViewData["Title"] = "Asignar Origen a Artículo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+        <div id="liveToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["Mensaje"]
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<form onsubmit="guardarOrigenes(); return false;">
+    <div class="mb-3">
+        <label class="form-label">Artículo</label>
+        <select class="form-select" id="select-articulo" onchange="asignarArticulo(this.value)"></select>
+        <button type="button" class="btn btn-sm btn-outline-secondary mt-1" onclick="limpiarFormulario()">Limpiar selección</button>
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Descripción</label>
+            <input class="form-control" id="input-des1" readonly />
+        </div>
+    </div>
+
+    <input type="hidden" id="Art" name="Art" />
+    <input type="hidden" id="Des1" name="Des1" />
+
+    <p><strong>Par:</strong></p>
+    <ul>
+        <li>1 = Resurtido Automático del CEDIS</li>
+        <li>2 = Compra Local</li>
+        <li>3 = Compra Corporativa</li>
+    </ul>
+
+    <div class="row" id="contenedor-sucursales">
+        @{
+            string[] sucursales = new[] { "ABE", "ACT", "CAB", "CER", "CMA", "COM", "LOM", "TRV", "ZAB", "ZOB", "ACA", "MIB", "MIN", "ORI", "SAB", "SAN", "TBC", "TBE", "TEZ", "TUX", "XAC", "XAL", "ZAM", "ACC", "CCC", "ICC", "XCC", "UCC", "VCC", "ZOC", "CEC", "CMI" };
+        }
+        @foreach (var suc in sucursales)
+        {
+            <div class="col-md-2 mb-4 text-center">
+                <div class="border rounded p-2">
+                    <strong>@suc</strong><br />
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="1" /> 1
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="2" /> 2
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-par" type="radio" name="par-@suc" value="3" /> 3
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-end mb-5">
+        <button type="submit" class="btn btn-success me-2">Guardar</button>
+        <a href="/Origen" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const mapaSucursalAlmacen = {
+            ABE: { alm: "M29", salm: "ABE1" }, ACT: { alm: "M46", salm: "ACT1" }, CAB: { alm: "M54", salm: "CAB1" },
+            CER: { alm: "M61", salm: "CER1" }, CMA: { alm: "M37", salm: "CMA1" }, LOM: { alm: "M60", salm: "LOM1" },
+            COM: { alm: "M56", salm: "COM1" }, TRV: { alm: "M49", salm: "TRV1" }, ZAB: { alm: "M45", salm: "ZAB1" },
+            ZOB: { alm: "M08", salm: "ZOB1" }, ACA: { alm: "M07", salm: "ACA1" }, MIB: { alm: "M20", salm: "MIB1" },
+            MIN: { alm: "M06", salm: "MIN1" }, ORI: { alm: "M04", salm: "ORI1" }, SAB: { alm: "M38", salm: "SAB1" },
+            SAN: { alm: "M10", salm: "SAN1" }, TBC: { alm: "A04", salm: "TBC1" }, TBE: { alm: "M15", salm: "BEB2" },
+            TEZ: { alm: "A03", salm: "TEZ1" }, TUX: { alm: "A02", salm: "TUX1" }, XAC: { alm: "M28", salm: "XAC1" },
+            XAL: { alm: "M27", salm: "XAL1" }, ZAM: { alm: "M51", salm: "ZAM1" }, ACC: { alm: "M63", salm: "ACC1" },
+            CCC: { alm: "R12", salm: "CCC1" }, ICC: { alm: "R21", salm: "ICC1" }, XCC: { alm: "M30", salm: "XCC1" },
+            UCC: { alm: "R13", salm: "UCC1" }, VCC: { alm: "R43", salm: "VCC1" }, ZOC: { alm: "R07", salm: "ZOC1" },
+            CEC: { alm: "M52", salm: "CEC1" }, CMI: { alm: "M62", salm: "CMI1" }
+        };
+
+        $(document).ready(function () {
+            $('#select-articulo').select2({
+                placeholder: "Selecciona artículo",
+                ajax: {
+                    url: '/Origen/BuscarArticulos',
+                    dataType: 'json',
+                    delay: 250,
+                    data: params => ({ q: params.term }),
+                    processResults: data => ({ results: data.results }),
+                    cache: true
+                },
+                width: '100%',
+                minimumInputLength: 1
+            });
+
+            const toastEl = document.getElementById('liveToast');
+            if (toastEl) {
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+
+        function asignarArticulo(valor) {
+            if (!valor) return;
+            const partes = valor.split('|');
+            $('#Art').val(partes[0]);
+            $('#Des1').val(partes[1]);
+            $('#input-des1').val(partes[1]);
+
+            document.querySelectorAll('.radio-par').forEach(r => r.checked = false);
+        }
+
+        function limpiarFormulario() {
+            $('#select-articulo').val(null).trigger('change');
+            $('#Art, #Des1, #input-des1').val('');
+            document.querySelectorAll('.radio-par').forEach(r => r.checked = false);
+        }
+
+        function guardarOrigenes() {
+            const articulo = document.getElementById('Art').value;
+            if (!articulo) {
+                alert("Debes seleccionar un artículo.");
+                return;
+            }
+
+            let data = [];
+            document.querySelectorAll(".radio-par:checked").forEach(function (radio) {
+                const sucursal = radio.name.replace("par-", "");
+                const par = radio.value;
+                if (mapaSucursalAlmacen[sucursal]) {
+                    const { alm, salm } = mapaSucursalAlmacen[sucursal];
+                    data.push({ alm, salm, art: articulo, par });
+                }
+            });
+
+            if (data.length === 0) {
+                alert("Selecciona al menos un origen.");
+                return;
+            }
+
+            fetch("/Origen/Guardar", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(resp => {
+                if (resp.ok) {
+                    location.href = "/Origen?mensaje=guardado";
+                } else {
+                    alert("Error al guardar");
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
+}

@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "WhatsApp actualizado";
+}
+
+<div class="alert alert-success mt-4">
+    <h4 class="alert-heading"><i class="fa-solid fa-circle-check"></i> ¡Actualización exitosa!</h4>
+    <p>El cliente con código <strong>@ViewBag.Cliente</strong> ha sido actualizado con su nuevo número de WhatsApp.</p>
+</div>
+
+<div class="mt-4 d-flex flex-wrap gap-3">
+    <a href="/VentasVip/DetalleSucursal?suc=@ViewBag.Sucursal" class="btn btn-primary">
+        <i class="fa-solid fa-arrow-left"></i> Regresar a detalle de sucursal
+    </a>
+
+    <a href="/VentasVip" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-list"></i> Ir al inicio del módulo VIP
+    </a>
+
+    <a href="/" class="btn btn-outline-dark">
+        <i class="fa-solid fa-house"></i> Ir al menú principal
+    </a>
+</div>

@@ -1,0 +1,129 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = AppMexaba
+build_property.RootNamespace = AppMexaba
+build_property.ProjectDir = C:\git\APPMEXABA\APPMEXABA\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\git\APPMEXABA\APPMEXABA
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/AbastoPorCapa/Detalle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJhc3RvUG9yQ2FwYVxEZXRhbGxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/AbastoPorCapa/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJhc3RvUG9yQ2FwYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Catalogo/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ29cQ3JlYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Catalogo/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ29cRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Catalogo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ29cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Login/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Origen/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JpZ2VuXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Origen/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JpZ2VuXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Origen/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JpZ2VuXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Sucursales/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VjdXJzYWxlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasCFR/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzQ0ZSXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasCFR/_DetallePlano.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzQ0ZSXF9EZXRhbGxlUGxhbm8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasCFR/_DetallePorClienteArticulo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzQ0ZSXF9EZXRhbGxlUG9yQ2xpZW50ZUFydGljdWxvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasCFR/_TotalesPorCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzQ0ZSXF9Ub3RhbGVzUG9yQ2xpZW50ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasVip/ConfirmacionWhatsApp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzVmlwXENvbmZpcm1hY2lvbldoYXRzQXBwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasVip/DetalleSucursal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzVmlwXERldGFsbGVTdWN1cnNhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasVip/EditarWhatsApp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzVmlwXEVkaXRhcldoYXRzQXBwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/VentasVip/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGFzVmlwXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/git/APPMEXABA/APPMEXABA/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-46xq5n6i1r

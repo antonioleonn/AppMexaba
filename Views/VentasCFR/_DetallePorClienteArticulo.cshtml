@@ -1,0 +1,33 @@
+﻿@model List<ResumenClienteArticulo>
+
+@{
+    ViewData["Title"] = "Detalle por Cliente y Artículo";
+}
+
+<h2>Compras por Cliente y Artículo</h2>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Código de Barras</th>
+            <th>Artículo</th>
+            <th>Clave</th>
+            <th>Total Artículos</th>
+            <th>Total Comprado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.NombreCliente</td>
+                <td>@d.CodBarras</td>
+                <td>@d.DescripcionArticulo</td>
+                <td>@d.ClaveArticulo</td>
+                <td>@d.TotalArticulos</td>
+                <td>@d.TotalCompras.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

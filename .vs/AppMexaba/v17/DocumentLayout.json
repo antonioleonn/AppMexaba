@@ -1,0 +1,196 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\git\\APPMEXABA\\AppMexaba\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\controllers\\ventascfrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:controllers\\ventascfrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\ventasporsucursal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\ventasporsucursal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\ventassociovsucursal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\ventassociovsucursal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\participacionsegmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\participacionsegmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\views\\ventascfr\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:views\\ventascfr\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\ventasporsegmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\ventasporsegmento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\ventacfr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\ventacfr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|c:\\git\\appmexaba\\appmexaba\\models\\ventaspordiatipoventa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4842B9DF-5B01-47AA-9ADD-8731DECEC9F1}|AppMexaba.csproj|solutionrelative:models\\ventaspordiatipoventa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VentasSocioVSucursal.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasSocioVSucursal.cs",
+              "RelativeDocumentMoniker": "Models\\VentasSocioVSucursal.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasSocioVSucursal.cs",
+              "RelativeToolTip": "Models\\VentasSocioVSucursal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T20:18:11.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VentasCFRController.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Controllers\\VentasCFRController.cs",
+              "RelativeDocumentMoniker": "Controllers\\VentasCFRController.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Controllers\\VentasCFRController.cs",
+              "RelativeToolTip": "Controllers\\VentasCFRController.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAAACEAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T15:04:14.769Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "VentasPorSucursal.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorSucursal.cs",
+              "RelativeDocumentMoniker": "Models\\VentasPorSucursal.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorSucursal.cs",
+              "RelativeToolTip": "Models\\VentasPorSucursal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T06:57:23.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Models\\AppDbContext.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\AppDbContext.cs",
+              "RelativeToolTip": "Models\\AppDbContext.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAywDsAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T19:59:48.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T19:21:43.376Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Views\\VentasCFR\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\VentasCFR\\Index.cshtml",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Views\\VentasCFR\\Index.cshtml",
+              "RelativeToolTip": "Views\\VentasCFR\\Index.cshtml",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAwLQAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-10T15:04:26.393Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ParticipacionSegmento.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\ParticipacionSegmento.cs",
+              "RelativeDocumentMoniker": "Models\\ParticipacionSegmento.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\ParticipacionSegmento.cs",
+              "RelativeToolTip": "Models\\ParticipacionSegmento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T06:57:28.843Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VentasPorSegmento.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorSegmento.cs",
+              "RelativeDocumentMoniker": "Models\\VentasPorSegmento.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorSegmento.cs",
+              "RelativeToolTip": "Models\\VentasPorSegmento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T06:57:27.205Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VentasPorDiaTipoVenta.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorDiaTipoVenta.cs",
+              "RelativeDocumentMoniker": "Models\\VentasPorDiaTipoVenta.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentasPorDiaTipoVenta.cs",
+              "RelativeToolTip": "Models\\VentasPorDiaTipoVenta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-06T17:04:02.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "VentaCFR.cs",
+              "DocumentMoniker": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentaCFR.cs",
+              "RelativeDocumentMoniker": "Models\\VentaCFR.cs",
+              "ToolTip": "C:\\git\\APPMEXABA\\AppMexaba\\Models\\VentaCFR.cs",
+              "RelativeToolTip": "Models\\VentaCFR.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T20:10:58.53Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
